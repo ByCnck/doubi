@@ -14,6 +14,7 @@ NAME="ShadowsocksR"
 NAME_BIN="server.py"
 FOLDER="/usr/local/shadowsocksr/shadowsocks"
 BIN="/usr/local/shadowsocksr/shadowsocks/server.py"
+LOG="/var/log/ssserver.log"
 if [ -f "/usr/local/shadowsocksr/user-config.json" ]; then
 	CONF="/usr/local/shadowsocksr/user-config.json"
 elif [ -f "/etc/shadowsocksr/user-config.json" ]; then
@@ -39,7 +40,8 @@ do_start(){
 		#python_ver=$(ls /usr/bin|grep -e "^python[23]\.[1-9]\+$"|tail -1)
 		python_ver="python"
 		ulimit -n 512000
-		nohup "${python_ver}" "$BIN" -c "$CONF" a >> ssserver.log 2>&1 &
+		nohup "${python_ver}" "$BIN" -c "$CONF" a >> $LOG 2>&1 &
+		echo "${python_ver}" "$BIN" -c "$CONF" a
 		sleep 2s
 		check_running
 		if [[ $? -eq 0 ]]; then
